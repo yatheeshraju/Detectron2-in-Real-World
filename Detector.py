@@ -92,6 +92,28 @@ class Detector:
                     self.playAudio('testfiles/horn.wav')
 
             cv2.imshow("output", output.get_image()[:, :, ::-1])
+            #cv2.imshow('window-name', video)
+            count = count + 1
+            if cv2.waitKey(10) & 0xFF == ord('q'):
+                break
+
+        cap.release()
+        cv2.destroyAllWindows()
+        cv2.waitKey(0)
+
+    def testCamera(self, camNumber):
+        cap = cv2.VideoCapture(camNumber)
+        cap.set(cv2.CAP_PROP_FPS, 1)
+        count = 0
+        percent = 100
+        while cap.isOpened():
+            ret, frame = cap.read()
+            if not ret:
+                continue
+            width = int(frame.shape[1] * percent / 100)
+            height = int(frame.shape[0] * percent / 100)
+            dim = (width, height)
+            video = cv2.resize(frame, dim, interpolation=cv2.INTER_AREA)
             cv2.imshow('window-name', video)
             count = count + 1
             if cv2.waitKey(10) & 0xFF == ord('q'):
